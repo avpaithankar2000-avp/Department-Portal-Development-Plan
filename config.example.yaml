@@ -1,0 +1,25 @@
+assistant:
+  name: Sanjivani University Copilot
+  wake_word: sanjivani
+  personality: helpful_university_copilot
+
+llm:
+  provider: local_rules
+  api_key: ""
+  model: ""
+  max_tokens: 2048
+
+security:
+  require_approval: true
+  dangerous_commands:
+    - rm -rf
+    - del /f
+    - format
+    - shutdown
+    - restart-computer
+    - remove-item
+    - taskkill /f
+
+runtime:
+  monitor_interval_seconds: 30
+  shell_timeout_seconds: 20

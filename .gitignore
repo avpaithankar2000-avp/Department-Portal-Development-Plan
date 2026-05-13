@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+data/*.db
+data/*.log
+config.yaml
+*.pyc
+
+# AIML Department Activity Portal
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+backend/node_modules/
+backend/.env
