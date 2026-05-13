@@ -13,7 +13,7 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
+const allowedOrigins = (process.env.CLIENT_URL || "https://aiml-frontend.onrender.com")
   .split(",")
   .map((origin) => origin.trim());
 

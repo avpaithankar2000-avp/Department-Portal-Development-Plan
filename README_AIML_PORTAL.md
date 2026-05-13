@@ -23,7 +23,7 @@ Set these values in `backend/.env`:
 
 - `MONGODB_URI`: MongoDB Atlas connection string.
 - `JWT_SECRET`: long random signing secret.
-- `CLIENT_URL`: frontend URL, for example `http://localhost:5173`.
+- `CLIENT_URL`: frontend URL, for example `https://aiml-frontend.onrender.com`.
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: Cloudinary credentials.
 - `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`: initial admin account used by `npm run seed:admin`.
 
