@@ -47,7 +47,7 @@ copy .env.example .env
 npm run dev
 ```
 
-Set `VITE_API_URL=http://localhost:5000/api` in `frontend/.env`.
+Set `VITE_API_URL=https://aiml-backend.onrender.com` in `frontend/.env`.
 
 Public pages:
 
