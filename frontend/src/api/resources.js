@@ -19,7 +19,7 @@ export const updateResource = (resource, id, payload, hasFile = false, onProgres
   api.put(`/${resource}/${id}`, payload, multipartConfig(hasFile, onProgress)).then((res) => res.data);
 export const deleteResource = (resource, id) => api.delete(`/${resource}/${id}`).then((res) => res.data);
 
-export const getDashboardSummary = () => api.get("/events/summary/dashboard").then((res) => res.data);
-export const getPlacementStats = () => api.get("/placements/stats/summary").then((res) => res.data);
-export const getAnalyticsOverview = () => api.get("/analytics/overview").then((res) => res.data);
-export const getReportData = (params = {}) => api.get("/reports/data", { params }).then((res) => res.data);
+export const getDashboardSummary = () => api.get("/api/events/summary/dashboard").then((res) => res.data);
+export const getPlacementStats = () => api.get("/api/placements/stats/summary").then((res) => res.data);
+export const getAnalyticsOverview = () => api.get("/api/analytics/overview").then((res) => res.data);
+export const getReportData = (params = {}) => api.get("/api/reports/data", { params }).then((res) => res.data);
