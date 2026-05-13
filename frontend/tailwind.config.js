@@ -20,7 +20,7 @@ export default {
         "premium-light":
           "radial-gradient(circle at top left, rgba(20,184,166,0.18), transparent 34%), radial-gradient(circle at 85% 15%, rgba(249,115,22,0.14), transparent 28%), linear-gradient(135deg, #f8fafc 0%, #eef7f6 48%, #f8fafc 100%)",
         "premium-dark":
-          "radial-gradient(circle at top left, rgba(20,184,166,0.22), transparent 32%), radial-gradient(circle at 90% 10%, rgba(56,189,248,0.16), transparent 26%), linear-gradient(135deg, #07111f 0%, #0f172a 52%, #111827 100%)"
+          "radial-gradient(circle at top left, rgba(20,184,166,0.12), transparent 32%), radial-gradient(circle at 90% 10%, rgba(56,189,248,0.08), transparent 26%), linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)"
       }
     }
   },

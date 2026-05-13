@@ -44,10 +44,6 @@ export const resourceConfig = {
     endpoint: "internships",
     hasFiles: true,
     documentFields: [
-      { name: "offerLetter", label: "Offer Letter" },
-      { name: "completionCertificate", label: "Completion Certificate" },
-      { name: "verificationProof", label: "Verification Proof" },
-      { name: "companyLogo", label: "Company Logo" },
       { name: "studentPhoto", label: "Student Photo" }
     ],
     columns: [
@@ -78,10 +74,6 @@ export const resourceConfig = {
     endpoint: "placements",
     hasFiles: true,
     documentFields: [
-      { name: "offerLetter", label: "Placement Offer Letter" },
-      { name: "appointmentLetter", label: "Appointment Letter" },
-      { name: "verificationProof", label: "Verification Proof" },
-      { name: "companyLogo", label: "Company Logo" },
       { name: "studentPhoto", label: "Student Photo" }
     ],
     columns: [

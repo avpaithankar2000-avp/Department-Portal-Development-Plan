@@ -81,33 +81,44 @@ const Placements = () => {
         </FilterBar>
         <StateBlock loading={loading} error={error} empty={!loading && items.length === 0} />
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          {items.map((item) => (
-            <motion.article key={item._id} whileHover={{ y: -7, scale: 1.01 }} className="premium-card p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex gap-4">
-                  <CompanyLogoCard logo={item.companyLogo} company={item.company} />
-                  <div>
-                    <span className="rounded-full bg-orange-500/10 px-3 py-1 text-xs font-black text-coral">{item.offerType || item.placementType}</span>
-                    <h2 className="mt-3 text-2xl font-black text-ink dark:text-white">{item.studentName}</h2>
-                    <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.role}</p>
-                  </div>
-                </div>
-                <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/10">
-                  {item.studentPhoto?.secure_url ? <img src={item.studentPhoto.secure_url} alt={item.studentName} className="h-full w-full object-cover" /> : <UserRound className="text-slate-400" size={28} />}
-                </div>
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <Info label="Package" value={moneyLpa(item.packageLpa || item.package)} highlight />
-                <Info label="Location" value={item.location} />
-                <Info label="Academic Year" value={item.academicYear} />
-              </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <Info label="Recruiter" value={item.recruiterName || item.company} />
-                <Info label="Joining Date" value={formatDate(item.joiningDate || item.placedDate)} />
-              </div>
-            </motion.article>
-          ))}
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/5">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-slate-50 text-slate-500 dark:bg-white/5 dark:text-slate-400">
+              <tr>
+                <th className="px-4 py-3 font-bold">Student</th>
+                <th className="px-4 py-3 font-bold">Company & Role</th>
+                <th className="px-4 py-3 font-bold">Package</th>
+                <th className="px-4 py-3 font-bold">Year / Type</th>
+                <th className="px-4 py-3 font-bold">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-white/10">
+              {items.map((item) => (
+                <tr key={item._id} className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
+                        {item.studentPhoto?.secure_url ? <img src={item.studentPhoto.secure_url} alt={item.studentName} className="h-full w-full object-cover" /> : <UserRound className="h-4 w-4 text-slate-400" />}
+                      </div>
+                      <span className="font-bold text-ink dark:text-white">{item.studentName}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="font-bold text-ink dark:text-white">{item.company}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">{item.role}</div>
+                  </td>
+                  <td className="px-4 py-3 font-black text-brand dark:text-teal-400">{moneyLpa(item.packageLpa || item.package)}</td>
+                  <td className="px-4 py-3">
+                    <div className="text-ink dark:text-white">{item.academicYear}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">{item.offerType || item.placementType}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-600 dark:bg-white/10 dark:text-slate-300">{item.verificationStatus || "Pending"}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <Pagination pagination={pagination} onPage={(page) => setParams((prev) => ({ ...prev, page }))} />
       </main>

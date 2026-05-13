@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { BarChart3, Bell, CalendarDays, ChevronLeft, Download, Globe2, GraduationCap, LogOut, Medal, Menu, PanelLeft, PieChart, ShieldCheck, Trophy, UserRound, X } from "lucide-react";
-import { useState } from "react";
+import { BarChart3, Bell, CalendarDays, ChevronLeft, Download, Globe2, GraduationCap, LogOut, Medal, Menu, PanelLeft, PieChart, ShieldCheck, Trophy, UserRound, X, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import ConfirmModal from "../components/ui/ConfirmModal";
 import ThemeToggle from "../components/ui/ThemeToggle";
@@ -22,6 +22,23 @@ const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+
+  const profileRef = useRef(null);
+  const notifRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const Sidebar = (
     <motion.aside
@@ -29,7 +46,7 @@ const AdminLayout = () => {
       animate={{ width: collapsed ? 92 : 280 }}
       className="flex h-screen min-h-screen flex-col overflow-hidden border-r border-white/10 bg-night/90 text-white shadow-night backdrop-blur-2xl"
     >
-      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
+      <div className={`flex items-center ${collapsed ? "justify-center" : "gap-3 px-5"} border-b border-white/10 py-5`}>
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-sky-500 shadow-glow">
           <PanelLeft size={22} />
         </span>
@@ -39,14 +56,21 @@ const AdminLayout = () => {
             <p className="truncate text-xs text-slate-300">{user?.email}</p>
           </motion.div>
         )}
-        <button className="ml-auto hidden rounded-2xl bg-white/10 p-2 lg:grid" onClick={() => setCollapsed((value) => !value)} aria-label="Collapse sidebar">
-          <ChevronLeft className={collapsed ? "rotate-180 transition" : "transition"} size={18} />
-        </button>
+        {!collapsed && (
+          <button className="ml-auto hidden rounded-2xl bg-white/10 p-2 lg:grid" onClick={() => setCollapsed(true)} aria-label="Collapse sidebar">
+            <ChevronLeft className="transition" size={18} />
+          </button>
+        )}
         <button className="ml-auto rounded-2xl bg-white/10 p-2 lg:hidden" onClick={() => setMobileOpen(false)} aria-label="Close sidebar">
           <X size={18} />
         </button>
       </div>
-      <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto p-4">
+      {collapsed && (
+        <button className="mx-auto mt-4 hidden rounded-2xl bg-white/10 p-2 lg:grid" onClick={() => setCollapsed(false)} aria-label="Expand sidebar">
+          <ChevronLeft className="rotate-180 transition" size={18} />
+        </button>
+      )}
+      <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto hide-scrollbar p-4">
         {!collapsed && (
           <div className="mb-4 rounded-3xl bg-white/10 p-4">
             <div className="flex items-center gap-3">
@@ -67,25 +91,25 @@ const AdminLayout = () => {
             end={to === "/admin"}
             onClick={() => setMobileOpen(false)}
             className={({ isActive }) =>
-              `group relative flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold transition ${isActive ? "bg-white text-ink shadow-glow" : "text-slate-300 hover:bg-white/10 hover:text-white"}`
+              `group relative flex items-center ${collapsed ? "justify-center" : "gap-3 px-3"} rounded-2xl py-3 text-sm font-bold transition ${isActive ? "bg-white text-ink shadow-glow" : "text-slate-300 hover:bg-white/10 hover:text-white"}`
             }
           >
-            <Icon size={19} />
-            {!collapsed && <span>{label}</span>}
+            <Icon size={19} className="shrink-0" />
+            {!collapsed && <span className="truncate">{label}</span>}
           </NavLink>
         ))}
       </nav>
       <NavLink
         to="/"
         onClick={() => setMobileOpen(false)}
-        className="mx-4 mb-2 flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-300 transition hover:bg-white/10 hover:text-white"
+        className={`mx-4 mb-2 flex items-center ${collapsed ? "justify-center" : "gap-3 px-3"} rounded-2xl py-3 text-sm font-bold text-slate-300 transition hover:bg-white/10 hover:text-white`}
       >
-        <Globe2 size={18} />
-        {!collapsed && <span>Public Website</span>}
+        <Globe2 size={18} className="shrink-0" />
+        {!collapsed && <span className="truncate">Public Website</span>}
       </NavLink>
-      <button onClick={() => setLogoutOpen(true)} className="m-4 flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-300 hover:bg-white/10 hover:text-white">
-        <LogOut size={18} />
-        {!collapsed && "Logout"}
+      <button onClick={() => setLogoutOpen(true)} className={`mx-4 mb-4 flex items-center ${collapsed ? "justify-center" : "gap-3 px-3"} rounded-2xl py-3 text-sm font-bold text-slate-300 transition hover:bg-white/10 hover:text-white`}>
+        <LogOut size={18} className="shrink-0" />
+        {!collapsed && <span className="truncate">Logout</span>}
       </button>
     </motion.aside>
   );
@@ -111,27 +135,85 @@ const AdminLayout = () => {
           <div className="hidden text-sm font-bold text-slate-500 dark:text-slate-400 sm:block">AIML Department Activity Portal</div>
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <button className="btn-secondary relative px-3" aria-label="Notifications">
-              <Bell size={18} />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-coral" />
-            </button>
-            <div className="relative">
-              <button className="btn-secondary px-3" onClick={() => setProfileOpen((value) => !value)} aria-label="Profile menu">
+            
+            {/* Notification Dropdown */}
+            <div className="relative" ref={notifRef}>
+              <button 
+                className={`btn-secondary relative px-3 transition-colors ${notifOpen ? "bg-white/20 dark:bg-white/10" : ""}`} 
+                onClick={() => setNotifOpen((value) => !value)} 
+                aria-label="Notifications"
+              >
+                <Bell size={18} />
+                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-coral shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+              </button>
+              <AnimatePresence>
+                {notifOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-14 z-[100] w-80 overflow-hidden rounded-3xl border border-white/60 bg-white/90 p-4 shadow-[0_20px_40px_rgba(0,0,0,0.1)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-900/95 dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+                  >
+                    <div className="mb-3 flex items-center justify-between border-b border-slate-200/50 pb-2 dark:border-white/10">
+                      <h3 className="font-bold text-ink dark:text-white">Notifications</h3>
+                      <span className="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">1 NEW</span>
+                    </div>
+                    <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-3 transition hover:bg-slate-100 dark:bg-white/5 dark:hover:bg-white/10">
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand dark:text-teal-400">
+                        <ShieldCheck size={14} />
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-ink dark:text-white">System Update</p>
+                        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Export system has been upgraded to v2.0.</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Profile Dropdown */}
+            <div className="relative" ref={profileRef}>
+              <button 
+                className={`btn-secondary px-3 transition-colors ${profileOpen ? "bg-white/20 dark:bg-white/10" : ""}`} 
+                onClick={() => setProfileOpen((value) => !value)} 
+                aria-label="Profile menu"
+              >
                 <UserRound size={18} />
               </button>
               <AnimatePresence>
                 {profileOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    className="absolute right-0 top-14 w-64 rounded-3xl border border-white/60 bg-white/90 p-4 shadow-soft backdrop-blur-2xl dark:border-white/10 dark:bg-night/95"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-14 z-[100] w-64 overflow-hidden rounded-3xl border border-white/60 bg-white/90 shadow-[0_20px_40px_rgba(0,0,0,0.1)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-900/95 dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
                   >
-                    <p className="font-bold text-ink dark:text-white">{user?.name || "Portal Admin"}</p>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{user?.email}</p>
-                    <button className="btn-primary mt-4 w-full" onClick={() => setLogoutOpen(true)}>
-                      Logout
-                    </button>
+                    <div className="border-b border-slate-200/50 bg-slate-50/50 p-5 dark:border-white/10 dark:bg-white/5">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand to-teal-500 text-white shadow-md">
+                          <User size={20} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-black text-ink dark:text-white">{user?.name || "Portal Admin"}</p>
+                          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{user?.email}</p>
+                        </div>
+                      </div>
+                      <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-teal-500/20 bg-teal-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-teal-600 dark:text-teal-400">
+                        <ShieldCheck size={12} /> Super Admin
+                      </div>
+                    </div>
+                    <div className="p-2">
+                      <button 
+                        className="group flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10" 
+                        onClick={() => { setProfileOpen(false); setLogoutOpen(true); }}
+                      >
+                        <LogOut size={16} className="transition-transform group-hover:-translate-x-1" />
+                        Sign Out
+                      </button>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>

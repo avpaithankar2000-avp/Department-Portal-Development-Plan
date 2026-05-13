@@ -6,6 +6,7 @@ import sanjivaniLogo from "../assets/sanjivani-logo.png";
 import ThemeToggle from "../components/ui/ThemeToggle";
 
 const links = [
+  ["Home", "/"],
   ["Events", "/events"],
   ["Achievements", "/achievements"],
   ["Internships", "/internships"],
@@ -29,19 +30,22 @@ const PublicLayout = () => {
               <span className="hidden truncate text-xs font-bold text-slate-500 dark:text-slate-400 sm:block">Sanjivani University</span>
             </span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center md:flex md:gap-1">
             {links.map(([label, to]) => (
               <NavLink
                 key={to}
                 to={to}
+                end={to === "/"}
                 className={({ isActive }) =>
-                  `rounded-2xl px-4 py-2 text-sm font-bold transition ${isActive ? "bg-white text-brand shadow-sm dark:bg-white/15 dark:text-teal-200" : "text-slate-600 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-white/10"}`
+                  `rounded-xl px-3 py-2 text-[13px] font-bold transition lg:px-4 lg:text-sm ${isActive ? "bg-white text-brand shadow-sm dark:bg-white/15 dark:text-teal-400" : "text-slate-600 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-white/10"}`
                 }
               >
                 {label}
               </NavLink>
             ))}
-            <ThemeToggle />
+            <div className="ml-2 pl-2 border-l border-slate-200 dark:border-white/10">
+              <ThemeToggle />
+            </div>
           </nav>
           <button className="btn-secondary px-3 md:hidden" onClick={() => setOpen((value) => !value)} aria-label="Toggle menu">
             {open ? <X size={18} /> : <Menu size={18} />}

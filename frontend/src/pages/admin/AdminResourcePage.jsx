@@ -80,8 +80,17 @@ const AdminResourcePage = ({ resource }) => {
         </button>
       </div>
       <div className="glass-panel mb-4 rounded-[2rem] p-4">
-        <div className={config.hasFiles ? "grid gap-3 lg:grid-cols-4" : ""}>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <input value={params.search} onChange={(event) => setParams((prev) => ({ ...prev, search: event.target.value, page: 1 }))} placeholder={`Search ${config.title.toLowerCase()}`} />
+          {config.endpoint === "achievements" && (
+            <>
+              <input type="date" value={params.date || ""} onChange={(event) => setParams((prev) => ({ ...prev, date: event.target.value, page: 1 }))} />
+              <select value={params.sort || ""} onChange={(event) => setParams((prev) => ({ ...prev, sort: event.target.value, page: 1 }))}>
+                <option value="">Sort default</option>
+                <option value="-createdAt">Newest to Oldest</option>
+              </select>
+            </>
+          )}
           {config.hasFiles && (
             <>
               <input value={params.company || ""} onChange={(event) => setParams((prev) => ({ ...prev, company: event.target.value, page: 1 }))} placeholder="Company" />

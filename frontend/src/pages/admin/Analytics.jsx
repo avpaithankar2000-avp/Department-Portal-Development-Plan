@@ -40,14 +40,9 @@ const Analytics = () => {
     <AnimatedPage>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-sm font-black uppercase tracking-wide text-brand dark:text-teal-200">Institutional intelligence</p>
+          <p className="text-sm font-black uppercase tracking-wide text-brand dark:text-teal-400">Institutional intelligence</p>
           <h1 className="mt-1 text-4xl font-black text-ink dark:text-white">Analytics Panel</h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">A dean-ready overview across events, achievements, internships, and placements.</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button className="btn-secondary" onClick={async () => (await import("../../utils/simpleExports")).exportAnalyticsPDF(analytics)}><Download size={17} /> PDF</button>
-          <button className="btn-secondary" onClick={async () => (await import("../../utils/simpleExports")).exportAnalyticsExcel(analytics)}><Download size={17} /> Excel</button>
-          <button className="btn-primary" onClick={async () => (await import("../../utils/simpleExports")).exportAnalyticsPPT(analytics)}><Download size={17} /> PPT</button>
+          <p className="mt-2 text-slate-600 dark:text-slate-300">Centralized institutional intelligence for academic activities, student growth, achievements, internships, and placement performance.</p>
         </div>
       </div>
 

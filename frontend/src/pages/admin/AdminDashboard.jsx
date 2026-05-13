@@ -3,6 +3,7 @@ import { Award, BriefcaseBusiness, CalendarDays, GraduationCap } from "lucide-re
 import { useEffect, useState } from "react";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { getDashboardSummary, getPlacementStats, listResource } from "../../api/resources";
+import AdminGalleryManager from "../../components/admin/AdminGalleryManager";
 import AnimatedCounter from "../../components/ui/AnimatedCounter";
 import AnimatedPage from "../../components/ui/AnimatedPage";
 
@@ -92,6 +93,7 @@ const AdminDashboard = () => {
           ))}
         </div>
       </div>
+      <AdminGalleryManager />
     </AnimatedPage>
   );
 };
